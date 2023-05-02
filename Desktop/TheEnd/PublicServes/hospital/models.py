@@ -1,6 +1,17 @@
 from django.db import models
 
 # Create your models here.
+class Customer (models.Model):
+    ip_c = models.IntegerField(null=False, primary_key=True)
+    f_name = models.CharField(max_length=50, null=False)
+    m_name = models.CharField(max_length=50, null=False)
+    l_name = models.CharField(max_length=50, null=False)
+    phone = models.BigIntegerField(null=False)
+    password = models.CharField(max_length=50, null=False)
+    e_mail = models.EmailField(max)
+
+    def __str__(self):
+        return Customer.ip_c + Customer.f_name + Customer.m_name + Customer.l_name + Customer.phone + Customer.e_mail
 
 
 class HospitalService(models.Model):
@@ -20,7 +31,7 @@ class HospitalService(models.Model):
 class Hospitals (models.Model):
     ip_h = models.IntegerField(null=False, primary_key=True)
     name_h = models.CharField(null=False, max_length=50)
-    phone = models.models.BigIntegerField(null=False)
+    phone = models.BigIntegerField(null=False)
     ip_t = models.ForeignKey(
         "HospitalType",
         on_delete=models.CASCADE

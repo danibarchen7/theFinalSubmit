@@ -3,6 +3,19 @@ from django.db import models
 # Create your models here.
 
 
+class Customer (models.Model):
+    ip_c = models.IntegerField(null=False, primary_key=True)
+    f_name = models.CharField(max_length=50, null=False)
+    m_name = models.CharField(max_length=50, null=False)
+    l_name = models.CharField(max_length=50, null=False)
+    phone = models.BigIntegerField(null=False)
+    password = models.CharField(max_length=50, null=False)
+    e_mail = models.EmailField(max)
+
+    def __str__(self):
+        return Customer.ip_c + Customer.f_name + Customer.m_name + Customer.l_name + Customer.phone + Customer.e_mail
+
+
 class PharmacieServies(models.Model):
     FRIDAY = "FR"
     SUNDAY = "SU"
@@ -80,9 +93,10 @@ class PharmaciesContent (models.Model):
     def __str__(self):
         return self.alternative
 
-    class Medicine (models.Model):
-        ip_m = models.IntegerField(null=False, primary_key=True)
-        medicine = models.models.CharField(null=True, max_length=50)
 
-        def __str__(self):
-            return self.medicine
+class Medicine (models.Model):
+    ip_m = models.IntegerField(null=False, primary_key=True)
+    medicine = models.CharField(null=True, max_length=50)
+
+    def __str__(self):
+        return self.medicine
