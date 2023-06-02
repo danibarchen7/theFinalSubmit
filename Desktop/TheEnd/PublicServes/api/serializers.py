@@ -1,5 +1,6 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Pharmacies
+from pharmacy.models import Pharmacies
+from doctor.models import Doctors
 
 
 class PharmacySerializer(ModelSerializer):
@@ -7,4 +8,11 @@ class PharmacySerializer(ModelSerializer):
         model = Pharmacies
         # if i want to spcifay a fields it's look like that
         # fields = ['the fildname','the other one',and so on]
+        fields = '__all__'
+
+
+class DoctorsSerializer(ModelSerializer):
+    class Meta:
+        model = Doctors
+
         fields = '__all__'

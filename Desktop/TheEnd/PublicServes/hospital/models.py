@@ -1,37 +1,26 @@
 from django.db import models
+from customer.models import Customer
 
-# Create your models here.
-class Customer (models.Model):
-    ip_c = models.IntegerField(null=False, primary_key=True)
-    f_name = models.CharField(max_length=50, null=False)
-    m_name = models.CharField(max_length=50, null=False)
-    l_name = models.CharField(max_length=50, null=False)
-    phone = models.BigIntegerField(null=False)
-    password = models.CharField(max_length=50, null=False)
-    e_mail = models.EmailField(max)
-
-    def __str__(self):
-        return Customer.ip_c + Customer.f_name + Customer.m_name + Customer.l_name + Customer.phone + Customer.e_mail
+from django.utils import timezone
 
 
 class HospitalService(models.Model):
     ip_c = models.ForeignKey(
-        "Customer",
+        Customer,
         on_delete=models.CASCADE
     )
-    date_time = models.DateField(null=False)
+    date_time = models.DateField(default=timezone.now)
     ip_h = models.ForeignKey(
         "Hospitals",
         on_delete=models.CASCADE
     )
     rating = models.IntegerField(null=False)
-    review = models.CharField(null=True, max_length=50)
 
 
 class Hospitals (models.Model):
     ip_h = models.IntegerField(null=False, primary_key=True)
     name_h = models.CharField(null=False, max_length=50)
-    phone = models.BigIntegerField(null=False)
+    phone = models.CharField(max_length=13, null=False)
     ip_t = models.ForeignKey(
         "HospitalType",
         on_delete=models.CASCADE
@@ -56,6 +45,8 @@ class HospitalType (models.Model):
 
     def __str__(self):
         return self.Type
+
+# hospital spechlist
 
 
 class Competence (models.Model):

@@ -1,47 +1,33 @@
 from django.db import models
-
+from customer.models import Customer
+from django.utils import timezone
 # Create your models here.
 
-
-class Customer (models.Model):
-    ip_c = models.IntegerField(null=False, primary_key=True)
-    f_name = models.CharField(max_length=50, null=False)
-    m_name = models.CharField(max_length=50, null=False)
-    l_name = models.CharField(max_length=50, null=False)
-    phone = models.BigIntegerField(null=False)
-    password = models.CharField(max_length=50, null=False)
-    e_mail = models.EmailField(max)
-
-    def __str__(self):
-        return Customer.ip_c + Customer.f_name + Customer.m_name + Customer.l_name + Customer.phone + Customer.e_mail
+# how to import app in another  django app?
 
 
 class DoctarService(models.Model):
     ip_c = models.ForeignKey(
-        "Customer",
+        Customer,
         on_delete=models.CASCADE
     )
-    date_time = models.DateTimeField(null=False)
+    date_time = models.DateTimeField(default=timezone.now)
     ip_d = models.ForeignKey(
         "Doctors",
         on_delete=models.CASCADE
     )
     rating = models.IntegerField(null=False)
-    review = models.CharField(max_length=50, null=False)
 
 
 class Doctors(models.Model):
     ip_d = models.IntegerField(null=False, primary_key=True)
-    f_name = models.CharField(max_length=50, null=False)
-    m_name = models.CharField(max_length=50, null=False)
-    l_name = models.CharField(max_length=50, null=False)
-    phone = models.IntegerField(null=False)
+    fullname = models.TextField(max_length=55)
+    phone = models.CharField(max_length=13, null=False)
     ip_s = models.ForeignKey(
         "Specializaion",
         on_delete=models.CASCADE
     )
     comments = models.CharField(max_length=2500, null=True)
-    work_time = models.DateTimeField(null=False)
     rating = models.IntegerField(null=False)
     holiday = models.CharField(max_length=50, null=False)
     site = models.CharField(max_length=70, null=False)

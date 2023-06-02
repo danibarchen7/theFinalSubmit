@@ -1,24 +1,12 @@
 from django.db import models
+from customer.models import Customer
 
 # Create your models here.
 
 
-class Customer (models.Model):
-    ip_c = models.IntegerField(null=False, primary_key=True)
-    f_name = models.CharField(max_length=50, null=False)
-    m_name = models.CharField(max_length=50, null=False)
-    l_name = models.CharField(max_length=50, null=False)
-    phone = models.BigIntegerField(null=False)
-    password = models.CharField(max_length=50, null=False)
-    e_mail = models.EmailField(max)
-
-    def __str__(self):
-        return Customer.ip_c + Customer.f_name + Customer.m_name + Customer.l_name + Customer.phone + Customer.e_mail
-
-
 class TransportService(models.Model):
     ip_c = models.ForeignKey(
-        "Customer",
+        Customer,
         on_delete=models.CASCADE
     )
     date_time = models.DateTimeField(null=False)
@@ -27,7 +15,6 @@ class TransportService(models.Model):
         on_delete=models.CASCADE
     )
     rating = models.IntegerField(null=False)
-    review = models.CharField(max_length=2500, null=False)
 
 
 class Trips (models.Model):
@@ -37,13 +24,15 @@ class Trips (models.Model):
         on_delete=models.CASCADE
     )
     time = models.DateTimeField(null=False)
-    phone = models.BigIntegerField(null=False)
     source = models.CharField(null=False, max_length=100)
     destination = models.CharField(null=False, max_length=100)
     ip_type = models.ForeignKey(
         "TransportType",
         on_delete=models.CASCADE
     )
+
+    def __str__(self) -> str:
+        return Trips.source + "to"+Trips.destination
 
     def __str__(self) -> str:
         return self.source + "-->"+self.destination
@@ -53,9 +42,9 @@ class TransportsCompany(models.Model):
     ip_tc = models.IntegerField(null=False, primary_key=True)
     name_tc = models.CharField(max_length=50, null=False)
     password = models.CharField(max_length=10, null=False)
-    phone = models.BigIntegerField(null=False)
+    phone = models.CharField(max_length=13, null=False)
     site = models.CharField(max_length=50, null=False)
-    picture = models.ImageField(null=False)
+    picture = models.ImageField(null=False, upload_to="media")
     comments = models.TextField(max_length=2500, null=False)
     rating = models.IntegerField(null=False)
 

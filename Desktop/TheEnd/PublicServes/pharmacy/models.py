@@ -1,19 +1,7 @@
 from django.db import models
+from customer.models import Customer
 
 # Create your models here.
-
-
-class Customer (models.Model):
-    ip_c = models.IntegerField(null=False, primary_key=True)
-    f_name = models.CharField(max_length=50, null=False)
-    m_name = models.CharField(max_length=50, null=False)
-    l_name = models.CharField(max_length=50, null=False)
-    phone = models.BigIntegerField(null=False)
-    password = models.CharField(max_length=50, null=False)
-    e_mail = models.EmailField(max)
-
-    def __str__(self):
-        return Customer.ip_c + Customer.f_name + Customer.m_name + Customer.l_name + Customer.phone + Customer.e_mail
 
 
 class PharmacieServies(models.Model):
@@ -29,23 +17,22 @@ class PharmacieServies(models.Model):
         (MANDAY, "Manday"),
         (TUSEDAY, "Tuseday"),
         (WEDNESDAY, "Wednesday"),
-        (THERSDAY, "Thersday")
+        (THERSDAY, "Thersday"),
     ]
     ip_c = models.ForeignKey(
-        "Customer",
+        Customer,
         on_delete=models.CASCADE
     )
-    date_time = models.DateTimeField(
+    date_time = models.CharField(
         max_length=2,
         choices=DAYS_CHOICES,
-        default=MANDAY
+        default="FR",
     )
     ip_ph = models.ForeignKey(
         "Pharmacies",
         models.CASCADE
     )
     rating = models.IntegerField(null=False)
-    review = models.TextField(max_length=5000, null=False, blank=False)
 
 
 class Pharmacies (models.Model):
@@ -62,18 +49,24 @@ class Pharmacies (models.Model):
         (MANDAY, "Manday"),
         (TUSEDAY, "Tuseday"),
         (WEDNESDAY, "Wednesday"),
-        (THERSDAY, "Thersday")
+        (THERSDAY, "Thersday"),
     ]
     ip_ph = models.IntegerField(null=False, primary_key=True)
     name_ph = models.CharField(max_length=50, null=False)
-    phone = models.BigIntegerField(null=False)
+    phone = models.CharField(max_length=13, null=False)
     duration = models.CharField(max_length=50, null=False)
     password = models.CharField(max_length=50, null=False)
-    holiday = models.DateTimeField(
+    holiday = models.CharField(
         max_length=2,
         choices=DAYS_CHOICES,
-        default=MANDAY
+        default="FR",
+
     )
+    night_shift = models.DateField(auto_now=False, auto_now_add=False)
+    picture = models.ImageField(
+        null=True, upload_to="static\PublicServes\images")
+    site = models.CharField(max_length=50)
+    rate = models.CharField(max_length=10, null=False)
 
     def __str__(self):
         return self.name_ph
