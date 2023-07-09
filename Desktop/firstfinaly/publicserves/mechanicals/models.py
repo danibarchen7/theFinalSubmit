@@ -54,7 +54,12 @@ class MechanicalReview(models.Model):
         MyProfile, on_delete=models.CASCADE)
     mechanical = models.ForeignKey(
         Mechanical, on_delete=models.CASCADE)
-    rate = models.IntegerField(default=0)
+    rate = models.IntegerField(choices=[(1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
+    ])
     # created_at = models.DateTimeField(default=timezone.now())
 
     def __str__(self):

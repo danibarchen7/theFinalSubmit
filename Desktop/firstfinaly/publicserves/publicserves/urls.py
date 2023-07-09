@@ -18,14 +18,16 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from requests import Response
 from rest_framework.authtoken import views
 # from .router import router
 from rest_framework.authtoken import views
 from rest_framework import routers, serializers, viewsets
-
+from myprofile.views import getRoutes
 
 urlpatterns = [
     # path('myprofile/', include('django.contrib.auth.urls')),
+    path('',getRoutes),
     path('myprofile/', include('myprofile.urls')),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),

@@ -6,9 +6,7 @@ from rest_framework import serializers
 from .models import MyProfile
 
 
-class UserSerializer(serializers.ModelSerializer):
-    # phone = serializers.CharField(max_length=16)
-
+class MyProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyProfile
         fields = '__all__'

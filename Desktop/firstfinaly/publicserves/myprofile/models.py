@@ -20,7 +20,8 @@ class Mechanical(models.Model):
     ]
     ip_m = models.BigAutoField(null=False, primary_key=True,
                                unique=True, auto_created=True)
-    mechanical = models.ForeignKey("MyProfile", on_delete=models.CASCADE)
+    mechanical = models.OneToOneField("MyProfile", on_delete=models.CASCADE)
+    mechanical_name = models.CharField( max_length=50,null=True)
     ip_type = models.CharField(
         max_length=2,
         choices=WORKTYPE_CHOICES,
@@ -42,19 +43,20 @@ class Mechanical(models.Model):
         super(Mechanical, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
-        return str(self.mechanical)
+        return str(self.mechanical_name)
 
 class TransportsCompany(models.Model):
     ip_tc = models.BigAutoField(null=False, primary_key=True,
                                 unique=True, auto_created=True)
-    transport = models.ForeignKey("MyProfile", on_delete=models.CASCADE)
+    transport = models.OneToOneField("MyProfile", on_delete=models.CASCADE)
+    company_name = models.CharField( max_length=50,null=True)
     longitude = models.FloatField(null=True)
     laditude = models.FloatField(null=True)
     picture = models.ImageField(null=True, upload_to="media")
     description = models.TextField(max_length=2500, null=True)
 
     def __str__(self) -> str:
-        return self.transport
+        return self.company_name
 
 
 class Pharmacies (models.Model):
@@ -75,7 +77,8 @@ class Pharmacies (models.Model):
     ]
     id = models.BigAutoField(null=False, primary_key=True,
                              unique=True, auto_created=True)
-    pharmacy = models.ForeignKey("MyProfile", on_delete=models.CASCADE)
+    pharmacy = models.OneToOneField("MyProfile", on_delete=models.CASCADE)
+    pharmacy_name = models.CharField( max_length=50,null=True)
     duration = models.CharField(max_length=50, null=True)
     holiday = models.CharField(
         max_length=2,
@@ -99,7 +102,7 @@ class Pharmacies (models.Model):
         super(Pharmacies, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.pharmacy + " and the holiday " + self.holiday
+        return self.pharmacy_name + " and the holiday " + self.holiday
 
 
 class Hospitals (models.Model):
@@ -137,7 +140,8 @@ class Hospitals (models.Model):
     specialization = models.CharField(max_length=8,
                                       choices=HOSPITALS_SPECIALIZATION_CHOICES
                                       ,default="ALSP")
-    hospital = models.ForeignKey("MyProfile", on_delete=models.CASCADE)
+    hospital = models.OneToOneField("MyProfile", on_delete=models.CASCADE)
+    hospital_name = models.CharField( max_length=50,null=True)
     description = models.CharField(max_length=50, null=True)
     picture = models.ImageField(
         null=True, blank=True, upload_to="static\PublicServes\images")
@@ -153,7 +157,7 @@ class Hospitals (models.Model):
         super(Hospitals, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.hospital
+        return self.hospital_name
 
 
 class Doctors(models.Model):
@@ -173,7 +177,7 @@ class Doctors(models.Model):
     ]
     id = models.BigAutoField(null=False, primary_key=True,
                              unique=True, auto_created=True)
-    doctor = models.ForeignKey(
+    doctor = models.OneToOneField(
         "MyProfile", on_delete=models.CASCADE)
     ip_s = models.CharField(
         max_length=2,
@@ -217,7 +221,7 @@ class MyProfile(AbstractUser):
     email = models.CharField(unique=True, max_length=255)
     phone = models.CharField(max_length=13)
     user_type = models.CharField(
-        max_length=2,
+        max_length=4,
         choices=USER_CHOICES,
         default="US",
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Mechanical, TypeWork
+from .models import Mechanical, TypeWork,MechanicalReview,TypeVechale
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
@@ -8,6 +8,11 @@ class TypeWorkSerializer(serializers.ModelSerializer):
     class Meta:
         model = TypeWork
         fields = '__all'
+
+class TypeVichaleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TypeVechale
+        fields = '__all__'
 
 
 class MechanicalSerializer(serializers.ModelSerializer):
@@ -20,11 +25,13 @@ class MechanicalRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mechanical
         fields = ('ip_type',
-                  'holiday', 'picture', 'site')
+                  'holiday', 'picture', 'longitude','laditude','mechanical_name')
         extra_kwargs = {
             'ip_type': {'required': True},
             'holiday': {'required': True},
-            'site': {'required': True},
+            'longitude': {'required': True},
+            'laditude': {'required': True},
+            'mechanical_name': {'required': True},
         }
 
     # def validate(self, attrs):
@@ -37,10 +44,16 @@ class MechanicalRegisterSerializer(serializers.ModelSerializer):
         user = Mechanical.objects.create(
             ip_tupe=validated_data['ip_type'],
             holiday=validated_data['holiday'],
-            site=validated_data['site'],
+            longitude=validated_data['longitude'],
+            laditude=validated_data['laditude'],
+            mechanical_name=validated_data['mechanical_name'],
 
         )
 
         # user.set_password(validated_data['password'])
         user.save()
         return user
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MechanicalReview
+        fields = '__all__'

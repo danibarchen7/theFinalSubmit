@@ -1,6 +1,6 @@
 from django.db import models
 # Create your models here.
-from myprofile.models import TransportsCompany
+from myprofile.models import TransportsCompany,MyProfile
 
 
 class TransportService(models.Model):
@@ -44,7 +44,21 @@ class Trips (models.Model):
     #     return self.source + "-->"+self.destination
 
 
+class TransportCompanyReview(models.Model):
+    author = models.ForeignKey(
+        MyProfile, on_delete=models.CASCADE)
+    company = models.ForeignKey(
+        TransportsCompany, on_delete=models.CASCADE)
+    rate = models.IntegerField(choices=[(1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
+    ])
+    # created_at = models.DateTimeField(default=timezone.now())
 
+    def __str__(self):
+        return str(self.company)
 
 class TransportType(models.Model):
     ip_type = models.BigAutoField(

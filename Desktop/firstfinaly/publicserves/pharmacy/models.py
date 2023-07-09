@@ -33,7 +33,7 @@ class PharmaciesContents (models.Model):
 
 
 class Medicines (models.Model):
-    ip_m = models.IntegerField(
+    ip_m = models.BigAutoField(
         null=False, primary_key=True, unique=True, auto_created=True)
     medicine = models.CharField(null=True, max_length=50)
 

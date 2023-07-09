@@ -9,11 +9,11 @@ from rest_framework.decorators import api_view
 from rest_framework import generics, serializers, status, permissions
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny
-from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
+from .serializers import MyProfileSerializer, RegisterSerializer, LoginSerializer
 from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserSerializer
+
 from .models import MyProfile
 
 from rest_framework.views import APIView
@@ -62,20 +62,6 @@ class LogoutView(APIView):
         return Response({'message': 'Logout successful'})
 
 
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-
-        # Add custom claims
-        token['username'] = user.username
-        # ...
-
-        return token
-
-
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
 
 
 class LoginAPIView(generics.CreateAPIView):
@@ -100,16 +86,73 @@ class LoginAPIView(generics.CreateAPIView):
             return Response({'error': 'Invalid phone number or password'})
 
 
-class UserViewSet(APIView):
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (AllowAny,)
+class MyProfileView(APIView):
 
-    def get(self, request, *args, **kwargs):
-        user = MyProfile.objects.get()
-        serializer = UserSerializer(user)
+    def get(self, reques,pk):
+        user = MyProfile.objects.get(id=pk)
+        serializer = MyProfileSerializer(user)
         return Response(serializer.data)
+    def delete(self,request,pk):
+      user = MyProfile.objects.get(id=pk)
+      user.delete()
+      return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def put(self, request, pk):
+
+        user = MyProfile.objects.get(id=pk)
+        serializer = MyProfileSerializer(user, data=request.data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
 class RegisterUserAPIView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
+    
+
+@api_view(['GET'])   
+def  getRoutes(request):
+    routes = [
+        {
+            'Endpoint': '/myprofile',
+            'method': 'GET',
+            'body':None,
+            'description': 'Return the user info'
+        },
+        {
+            'Endpoint': '/pharmacy',
+            'method': 'GET',
+            'body':None,
+            'description': 'Return the pharmcy info and list all the pharmacies'
+        }
+        ,
+        {
+            'Endpoint': '/doctors',
+            'method': 'GET',
+            'body':None,
+            'description': 'Return the doctors info and list all the doctors'
+        }
+        ,
+        {
+            'Endpoint': '/hospitals',
+            'method': 'GET',
+            'body':None,
+            'description': 'Return the hospital info and list all the hospitals'
+        }
+        ,
+        {
+            'Endpoint': '/mechanicals',
+            'method': 'GET',
+            'body':None,
+            'description': 'Return the mechanical info and list all the mechanicals'
+        },
+        {
+            'Endpoint': '/trasportcom',
+            'method': 'GET',
+            'body':None,
+            'description': 'Return the trasportcompany info and list all the trasportcompanies'
+        }
+    ]
+    return Response({'routes':routes})

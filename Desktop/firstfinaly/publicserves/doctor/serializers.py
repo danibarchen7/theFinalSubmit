@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from doctor.models import Doctors
+from .models import *
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
-
+from myprofile.models import Doctors
 
 class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,21 +13,25 @@ class DoctorSerializer(serializers.ModelSerializer):
 class DoctorRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctors
-        fields = ('ip_s',
-                  'description', 'holiday', 'picture', 'site', 'rate')
+        fields = ('ip_s','doctor',
+                  'description', 'holiday', 'picture', 'longitude','laditude')
         extra_kwargs = {
             'ip_s': {'required': True},
+            'doctor': {'required': True},
             'holiday': {'required': True},
-            'site': {'required': True},
+            'longitude': {'required': True},
+            'laditude': {'required': True},
             'description': {'required': True},
         }
 
     def create(self, validated_data):
         user = Doctors.objects.create(
             ip_s=validated_data['ip_s'],
+            doctor=validated_data['doctor'],
             holiday=validated_data['holiday'],
             description=validated_data['description'],
-            site=validated_data['site']
+            longitude=validated_data['longitude'],
+            laditude=validated_data['laditude']
         )
 
     #     # user.set_password(validated_data['password'])
@@ -35,25 +39,7 @@ class DoctorRegisterSerializer(serializers.ModelSerializer):
         return user
 
 
-# doctor specialization serializer
-
-    # specialization = serializers.CharField(
-    #     required=True,
-    #     validators=[UniqueValidator(queryset=Specializaion.objects.all())]
-    # )
-
-    # class Meta:
-    #     model = Specializaion
-    #     fields = '__all__'
-    #     extra_kwargs = {
-    #         ' specialization': {'required': True}
-    #     }
-
-    # def create(self, validated_data):
-    #     user = Specializaion.objects.create(
-    #         specialization=validated_data['specialization']
-    #     )
-
-    #     # user.set_password(validated_data['password'])
-    #     user.save()
-    #     return user
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorReview
+        fields = '__all__'
